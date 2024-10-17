@@ -44,7 +44,7 @@ async function cadastrarFilme() {
         tituloInput.value = ""
         sinopseInput.value = ""
         anoInput.value = ""
-        classificacaoInput.value = ""
+        classificacaoInput[0].selected='selected'
 
         console.log({ titulo, sinopse, ano, classificacao });
 
