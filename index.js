@@ -1,8 +1,24 @@
 const express = require ('express')
 const cors = require('cors')
+const mongoose = require ('mongoose')
 const app = express()
+const dotenv = require("dotenv").config();
+
+URI = process.env.MONGODB_URL
+
 app.use(express.json())
 app.use(cors())
+console.log(process.env.MONGODB_URL)
+
+const Filme = mongoose.model ("Filme", mongoose.Schema({
+    titulo: {type: String},
+    sinopse: {type: String}
+}))
+
+async function conectarAoMongoDB(){
+    await
+    mongoose.connect(URI)
+}
 
 let filmes = [
     {
@@ -19,7 +35,14 @@ let filmes = [
     }
 ]
     
-
+app.listen(3000,()=>{
+    try{
+        conectarAoMongoDB()
+        console.log("Conectado ao mongo")
+    }catch(e){
+        console.log('Erro',e)
+    }
+})
 //GET http://localhost:3000/hey
 app.get('/hey', (req, res) => {
     res.send('hey')
@@ -30,20 +53,19 @@ app.get('/filmes', (req, res) => {
      res.json(filmes)
     })
 
-app.post("/filmes", (req, res) => {
+    app.post("/filmes", async (req, res) => {
         //obtém os dados enviados pelo cliente
-     const titulo = req.body.titulo
-     const sinopse = req.body.sinopse
-     const ano = req.body.ano
-     const classificacao = req.body.classificacao
-     //monta um objeto agrupando os dados. Ele representa um novo filme
-     const filme = {titulo: titulo, sinopse: sinopse, ano: ano, classificacao: classificacao}
-     //adiciona o novo filme à base
-     filmes.push(filme)
-     //responde ao cliente. Aqui, optamos por devolver a base inteira ao cliente, embora não seja obrigatório.
-     res.json(filmes)
-    })
+        const titulo = req.body.titulo
+        const sinopse = req.body.sinopse
+        //monta um objeto agrupando os dados. Ele representa um novo filme
+        //a seguir, construímos um objeto Filme a partir do modelo do mongoose
+        const filme = new Filme({titulo: titulo, sinopse: sinopse})
+        //save salva o novo filme na base gerenciada pelo MongoDB
+        await filme.save()
+        const filmes = await Filme.find()
+        res.json(filmes)
+        })
         
 
 
-app.listen(3000, () => console.log("up and running"))
+
