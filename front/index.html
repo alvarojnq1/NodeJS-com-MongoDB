@@ -5,44 +5,156 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,
 initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>    <title>Filmes</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <title>Filmes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.css" rel="stylesheet">
 </head>
 
 <body onload="obterFilmes()">
+
+    <div class="modal fade" id="modalLogin" aria-labelledby="modalLogin" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Login</h1>
+            </div>
+            <div class="modal-body">
+                <div class="d-none alert alert-dismissible fade alert-modal-login" role="alert">
+            </div>
+            <form>
+                <div class="mb-3">
+                    <label for="usuarioLoginInput" class="col-form-label">
+                        Usuário
+                    </label>
+                    <input type="text" id="usuarioLoginInput" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="passwordLoginInput" class="col-form-label">
+                    Senha
+                    </label>
+                    <input type="password" id="passwordLoginInput" class="form-control">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button onclick="fazerLogin()" type="button" class="btn btn-primary">
+            Login
+            </button>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="modalCadastro" aria-labelledby="modalCadastro" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Cadastro de usuário</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="d-none alert alert-dismissible fade
+                    alert-modal-cadastro" role="alert">
+                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <label for="usuarioCadastroInput" class="col-form-label">Usuário</label>
+                            <input type="text" id="usuarioCadastroInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="passwordCadastroInput" class="col-form-label">Senha</label>
+                            <input type="password" id="passwordCadastroInput" class="form-control">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button onclick="cadastrarUsuario()" type="button" class="btn btn-primary">
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <nav class="navbar navbar-expand-md bg-light">
+                    <a class="navbar-brand" href="#">Filmes</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNav"
+                        aria-controls="myNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="myNav">
+                        <div class="navbar-nav ms-auto">
+                            <a  id = "loginLink" class="nav-link active me-2" data-bs-toggle="modal" data-bs-target="#modalLogin"
+                             aria-current="page" href="#">
+                                Login
+                            </a>
+                            <a class="nav-link active me-2" data-bs-toggle="modal" data-bs-target="#modalCadastro"
+                                href="#">
+                                Novo usuário
+                            </a>
+                        </div>
+                    </div>
+
+
+                </nav>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-5">
 
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="d-none alert alert-danger alert-dismissible fade" role="alert">
-                    Preencha todos os campos.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <!-- tire isso -->
+                <!-- <div class="d-none alert alert-danger alert-dismissible fade"
+role="alert">
+Preencha todos os campos.
+<button type="button" class="btn-close" data-bs-dismiss="alert"
+aria-label="Close"></button>
+</div> -->
+                <!-- adicione isso -->
+                <div class="d-none alert alert-dismissible fade alert-filme" role="alert">
                 </div>
             </div>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-4">
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-4">
                     <input type="text" class="form-control" id="tituloInput" placeholder="Título do filme">
                     <label for="tituloInput">Título do filme</label>
                 </div>
             </div>
             <div class="col-md-8 col-lg-4">
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-4">
                     <input type="text" class="form-control" id="sinopseInput" placeholder="Sinopse do filme">
                     <label for="sinopseInput">Sinopse do filme</label>
                 </div>
             </div>
+
             <div class="col-md-8 col-lg-4">
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="anoInput" placeholder="Data de lançamento" min="1950" max="2024">
-                    <label for="sinopseInput">Ano de lançamento</label>
+                <div class="form-floating mb-4">
+                    <input type="number" min="1880" max="2024" class="form-control" id="anoInput"
+                        placeholder="Ano de lançamento do filme">
+                    <label for="anoInput">Ano de lançamento do filme do filme</label>
                 </div>
             </div>
             <div class="col-md-8 col-lg-4">
-                <div class="form-floating mb-3">
-                    <select class="form-select" aria-label="Classificação do Filme entre 1 e 5" id="classificacaoInput">
+                <div class="form-floating mb-4">
+                    <select class="form-select" aria-label="Classificação do filme entre Excelente e Péssimo"
+                        id="selectClassificacao">
                         <option value="">Selecione um valor</option>
                         <option value="5">Excelente</option>
                         <option value="4">Bom</option>
@@ -50,13 +162,16 @@ initial-scale=1">
                         <option value="2">Ruim</option>
                         <option value="1">Péssimo</option>
                     </select>
-                    <label for="classificacaoInput">Classificação do Filme</label>
+                    <label for="selectClassificacao">Classificação do filme</label>
                 </div>
             </div>
+
+
+
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-6 mt-2 mb-2">
-                <button class="btn btn-outline-primary w-100" onclick="cadastrarFilme()">Cadastrar</button>
+            <div class="col-md-8">
+                <button id="cadastrarFilmeButton" class="btn btn-outline-primary w-100" onclick="cadastrarFilme()" disabled>Cadastrar</button>
             </div>
         </div>
 
@@ -69,7 +184,7 @@ initial-scale=1">
                         <tr>
                             <th>Título</th>
                             <th>Sinopse</th>
-                            <th>Ano de lançamento</th>
+                            <th>Data de lançamento</th>
                             <th>Classificação</th>
                         </tr>
                     </thead>
